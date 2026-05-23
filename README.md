@@ -1,5 +1,4 @@
-Lab Portal
-A web platform for university students to find teammates for lab exercises. Post announcements, discover classmates with similar courses, and communicate in real time.
+Lab Portal is a web platform for university students to find teammates for lab exercises. Post announcements, discover classmates with similar courses, and communicate in real time.
 Features
 
 Create and search posts with categories (Lab Team, Study Group, etc.)
