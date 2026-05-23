@@ -1,0 +1,7 @@
+<%# Εμφάνιση μηνύματος — ο current_user περνιέται ως local για να δουλεύει και στο broadcast %>
+<% viewer = local_assigns[:viewer] || current_user %>
+<div class="message <%= message.user == viewer ? 'own-message' : 'other-message' %>">
+  <span class="message-sender"><%= message.user.name || message.user.email %></span>
+  <p class="message-body"><%= message.body %></p>
+  <span class="message-time"><%= message.created_at.strftime("%H:%M") %></span>
+</div>

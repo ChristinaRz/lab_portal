@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= content_for(:title) || "Lab Portal" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= Gon::Base.render_data %>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= yield :head %>
+  <link rel="icon" href="/icon.png" type="image/png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@3.4.0/superhero/bootstrap.min.css">
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body>
+
+  <nav style="background: #333; padding: 10px; color: white;">
+    <span style="font-size: 18px; font-weight: bold;">
+      <%= link_to "Lab Portal", root_path, style: "color: white; text-decoration: none;" %>
+    </span>
+    <span style="float: right; display: flex; align-items: center; gap: 15px;">
+      <% if user_signed_in? %>
+        <span style="color: #aaa;">Hi, <%= current_user.name.presence || current_user.email.presence || 'User' %>!</span>
+        <%= link_to "Profile", edit_user_registration_path, style: "color: white;" %>
+        <%= link_to "Posts", posts_path, style: "color: white;" %>
+        <%= link_to "Contacts", contacts_path, style: "color: white;" %>
+        <%= link_to "Messages", conversations_path, style: "color: white;" %>
+        <%= button_to "Logout", destroy_user_session_path,
+            method: :delete,
+            style: "background: #e74c3c; color: white; border: none; padding: 5px 10px; cursor: pointer;" %>
+      <% else %>
+        <%= link_to "Login", new_user_session_path, style: "color: white;" %>
+        <%= link_to "Sign Up", new_user_registration_path, style: "color: white;" %>
+      <% end %>
+    </span>
+  </nav>
+
+  <% if notice %>
+    <p style="color: green; padding: 10px;"><%= notice %></p>
+  <% end %>
+  <% if alert %>
+    <p style="color: red; padding: 10px;"><%= alert %></p>
+  <% end %>
+
+  <div style="padding: 20px;">
+    <%= yield %>
+  </div>
+
+  <%# Popup παράθυρα — δεν εμφανίζονται στις σελίδες conversations για αποφυγή διπλής εμφάνισης%>
+  <% if user_signed_in? &&
+        session[:private_conversations].present? &&
+        !controller_name.in?(%w[conversations]) %>
+    <div id="conversation-windows">
+      <% session[:private_conversations].each do |conversation_id| %>
+        <% conversation = Private::Conversation.find_by(id: conversation_id) %>
+        <% if conversation %>
+          <%= render partial: 'private/conversations/conversation',
+                     locals: { conversation: conversation } %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+</body>
+</html>

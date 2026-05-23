@@ -1,0 +1,33 @@
+<h1>Edit Post</h1>
+
+<%= form_with model: @post do |f| %>
+  <% if @post.errors.any? %>
+    <div style="color: red;">
+      <% @post.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title, placeholder: "Title" %>
+  </div>
+
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body, placeholder: "Content" %>
+  </div>
+
+  <%# Επιλογή κατηγορίας %>
+  <div>
+    <%= f.label :category_id, "Category" %>
+    <%= f.select :category_id,
+        options_from_collection_for_select(@categories, :id, :name, @post.category_id),
+        { include_blank: "No Category" } %>
+  </div>
+
+  <%= f.submit "Update Post" %>
+<% end %>
+
+<%= link_to "Cancel", post_path(@post) %>

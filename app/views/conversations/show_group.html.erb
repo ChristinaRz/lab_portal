@@ -1,0 +1,45 @@
+<h2><%= @conversation.name %></h2>
+
+<%# λίστα μελών %>
+<p style="color: #aaa; font-size: 13px;">
+  Members: <%= @conversation.users.map { |u| u.name || u.email }.join(", ") %>
+</p>
+
+<%# μηνύματα %>
+<div style="border: 1px solid #3a4f63; padding: 15px; height: 400px;
+            overflow-y: scroll; background: #2b3e50;" id="group-messages">
+  <% @messages.each do |message| %>
+    <div style="margin: 10px 0;
+                text-align: <%= message.user == current_user ? 'right' : 'left' %>;">
+      <strong style="font-size:12px; color:#aaa;"><%= message.user.name || message.user.email %></strong>
+      <p style="background: <%= message.user == current_user ? '#df691a' : '#3a4f63' %>;
+                color: white; display: inline-block; padding: 8px 12px;
+                border-radius: 10px; max-width: 70%; word-wrap: break-word;">
+        <%= message.content %>
+      </p>
+      <small style="color:#aaa; display:block;">
+        <%= message.created_at.strftime("%H:%M") %>
+      </small>
+    </div>
+  <% end %>
+</div>
+
+<hr>
+
+<%# φόρμα αποστολής μηνύματος %>
+<%= form_with url: group_conversation_messages_path(@conversation), method: :post,
+    data: { turbo: false } do |f| %>
+  <%= f.hidden_field :user_id, value: current_user.id %>
+  <%= f.hidden_field :conversation_id, value: @conversation.id %>
+  <%= f.text_area :content, placeholder: "Write a message...", rows: 3,
+      class: "form-control", style: "margin-bottom:8px;" %>
+  <%= f.submit "Send", class: "btn btn-primary" %>
+<% end %>
+
+<%= link_to "Back to Inbox", conversations_path, class: "btn btn-default",
+    style: "margin-top:8px;" %>
+<%= button_to "Delete Conversation", group_conv_path(@conversation),
+    method: :delete,
+    class: "btn btn-danger",
+    style: "margin-top:8px;",
+    data: { turbo_confirm: "Διαγραφή ομαδικής συνομιλίας;" } %>

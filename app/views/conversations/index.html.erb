@@ -1,0 +1,32 @@
+<h1>Inbox</h1>
+
+<h3>Private Conversations</h3>
+<% if @private_conversations.empty? %>
+  <p>No private conversations yet!</p>
+<% else %>
+  <% @private_conversations.each do |conversation| %>
+    <% other_user = conversation.opposed_user(current_user) %>
+    <% if other_user %>
+      <div style="margin: 10px 0; padding: 10px; border: 1px solid #ddd;">
+        <%= link_to (other_user.name || other_user.email), conversation_path(conversation) %>
+        <p><%= conversation.messages.last&.body %></p>
+        <small><%= conversation.messages.last&.created_at&.strftime("%H:%M") %></small>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
+
+<hr>
+
+<h3>Group Conversations</h3>
+<% if @group_conversations.empty? %>
+  <p>No group conversations yet!</p>
+<% else %>
+  <% @group_conversations.each do |conversation| %>
+    <div style="margin: 10px 0; padding: 10px; border: 1px solid #ddd;">
+      <%= link_to conversation.name, group_conv_path(conversation) %>
+      <p><%= conversation.messages.last&.content %></p>
+      <small><%= conversation.messages.last&.created_at&.strftime("%H:%M") %></small>
+    </div>
+  <% end %>
+<% end %>

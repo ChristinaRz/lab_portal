@@ -1,0 +1,35 @@
+<%# Popup παράθυρο ιδιωτικής συνομιλίας %>
+<% other_user = conversation.opposed_user(current_user) %>
+<div class="conversation-window" id="pc-<%= conversation.id %>">
+  <%# heading με όνομα χρήστη και κουμπί κλεισίματος %>
+  <div style="display:flex; align-items:center; background-color:#4e5d6c; height:40px;">
+    <span style="color:white; padding-left:15px; flex:1; line-height:40px;">
+      <%= other_user&.name || other_user&.email || "Unknown" %>
+    </span>
+    <%= button_to "✕", close_private_conversation_path(conversation),
+        method: :delete,
+        class: "close-conversation",
+        form: { data: { turbo: false }, style: "display:inline;" },
+        data: { type: "script" } %>
+  </div>
+
+  <%# λίστα μηνυμάτων %>
+  <div class="messages-list" id="messages-pc-<%= conversation.id %>"
+       style="background:#2b3e50; padding:10px;">
+    <%= render partial: 'private/messages/message',
+               collection: conversation.messages.order(:created_at).last(15),
+               as: :message %>
+  </div>
+
+  <%# φόρμα αποστολής μηνύματος %>
+  <div class="send-private-message" style="background:#2b3e50;">
+    <%= form_with url: private_conversation_messages_path(conversation),
+        data: { turbo: false } do |f| %>
+      <%= f.text_area :body, placeholder: "Write a message...", rows: 2,
+          style: "width:100%; border:none; border-top:1px solid rgba(0,0,0,0.2);
+                  background:#3a4f63; color:white; padding:8px; resize:none;" %>
+      <%= f.submit "Send", style: "width:100%; background:#df691a; color:white;
+                                   border:none; padding:6px; cursor:pointer;" %>
+    <% end %>
+  </div>
+</div>

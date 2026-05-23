@@ -1,0 +1,36 @@
+<h1>Posts</h1>
+
+<%= link_to "New Post", new_post_path %>
+
+<hr>
+
+<%# Φόρμα αναζήτησης και φιλτραρίσματος %>
+<%= form_with url: posts_path, method: :get do |f| %>
+  <%= f.text_field :search, 
+      placeholder: "Search posts...", 
+      value: params[:search] %>
+  
+  <%= f.select :category_id, 
+      options_from_collection_for_select(@categories, :id, :name, params[:category_id]),
+      { include_blank: "All Categories" } %>
+  
+  <%= f.submit "Search" %>
+<% end %>
+
+<hr>
+
+<% @posts.each do |post| %>
+  <div style="margin: 10px 0; padding: 10px; border: 1px solid #ddd;">
+    <h3><%= link_to post.title, post_path(post) %></h3>
+    <p><%= post.body %></p>
+    <small>by <%= post.user.email %></small>
+    <% if post.category.present? %>
+      <small> | Category: <%= post.category.name %></small>
+    <% end %>
+    <% if post.user == current_user %>
+      <%= link_to "Edit", edit_post_path(post) %>
+      <%= button_to "Delete", post_path(post), method: :delete,
+          data: { turbo_confirm: "Delete this post?" } %>
+    <% end %>
+  </div>
+<% end %>

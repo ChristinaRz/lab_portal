@@ -1,0 +1,10 @@
+// νέα ιδιωτική συνομιλία μετά τη δημιουργία
+var existing = document.getElementById("pc-<%= @conversation.id %>");
+
+if (!existing) {
+  document.body.insertAdjacentHTML('beforeend', "<%= j(render partial: 'private/conversations/conversation', locals: { conversation: @conversation }) %>");
+}
+
+// scroll στο τελευταίο μήνυμα
+var messages = document.getElementById("messages-pc-<%= @conversation.id %>");
+if (messages) { messages.scrollTop = messages.scrollHeight; }

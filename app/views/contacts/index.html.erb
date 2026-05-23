@@ -1,0 +1,25 @@
+<h1>My Contacts</h1>
+
+<h3>Add Contact</h3>
+<%= form_with url: contacts_path, method: :post do |f| %>
+  <div>
+    <label>Search by name</label>
+    <input type="text" name="contact_name" placeholder="Enter username..." />
+  </div>
+  <button type="submit">Add Contact</button>
+<% end %>
+
+<hr>
+
+<h3>Contacts list</h3>
+<% if @contacts.empty? %>
+  <p>No contacts yet!</p>
+<% else %>
+  <% @contacts.each do |c| %>
+    <div style="margin: 10px 0; padding: 8px; border: 1px solid #ddd;">
+      <p><strong><%= c.contact_user.name %></strong> (<%= c.contact_user.email %>)</p>
+      <%= button_to "Remove", contact_path(c), method: :delete,
+          data: { turbo_confirm: "Remove this contact?" } %>
+    </div>
+  <% end %>
+<% end %>

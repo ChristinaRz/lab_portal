@@ -1,0 +1,25 @@
+<h1>New Post</h1>
+
+<%= form_with model: @post do |f| %>
+  <div>
+    <%= f.label :title %>
+    <%= f.text_field :title, placeholder: "Title" %>
+  </div>
+
+  <div>
+    <%= f.label :body %>
+    <%= f.text_area :body, placeholder: "Content" %>
+  </div>
+
+  <%# Επιλογή κατηγορίας %>
+  <div>
+    <%= f.label :category_id, "Category" %>
+    <%= f.select :category_id,
+        options_from_collection_for_select(@categories, :id, :name),
+        { include_blank: "No Category" } %>
+  </div>
+
+  <%= f.submit "Create Post" %>
+<% end %>
+
+<%= link_to "Back", posts_path %>

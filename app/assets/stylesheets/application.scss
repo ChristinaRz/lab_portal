@@ -1,0 +1,22 @@
+// Variables
+@import "base/variables";
+
+// Default styles
+@import "base/default";
+
+// Partials - main css files
+@import "partials/conversation_window";
+@import "partials/home_page";
+@import "partials/messenger";
+@import "partials/signup";
+@import "partials/users";
+@import "partials/layout/navigation";
+@import "partials/posts/branch_page";
+@import "partials/posts/home_page";
+@import "partials/posts/modal";
+@import "partials/posts/new";
+@import "partials/posts/show";
+
+// Media queries for a responsive design
+@import "responsive/desktop";
+@import "responsive/mobile";

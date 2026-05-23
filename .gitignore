@@ -1,0 +1,45 @@
+# Bundler
+/.bundle
+ 
+#environment variables
+.env
+.env.*
+!.env.example
+ 
+#logs and temps
+/log/*
+/tmp/*
+!/log/.keep
+!/tmp/.keep
+/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+ 
+#storage
+/storage/*
+!/storage/.keep
+/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
+ 
+#assets
+/public/assets
+/app/assets/builds/*
+!/app/assets/builds/.keep
+ 
+#credentials keys
+/config/*.key
+/config/master.key
+/config/credentials.yml.enc
+ 
+#kamal secrets
+/.kamal/secrets
+ 
+# macOS
+.DS_Store
+ 
+#editor
+.idea/
+.vscode/
+*.swp
+*.swo
